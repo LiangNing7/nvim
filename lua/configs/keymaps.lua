@@ -21,7 +21,7 @@ vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Switch Right Window" })
 
 -- 上下移动选中文本
 vim.keymap.set("v", "j", ":move '>+1<CR>gv-gv", opt)
-vim.keymap.set({"n", "i"}, "K", ":move '<-2<CR>gv-gv", opt)
+vim.keymap.set({"n", "i"}, "<C-k>", ":move '<-2<CR>gv-gv", opt)
 
 -- insert 模式下，跳到行首行尾
 vim.keymap.set("i", "<C-h>", "<ESC>I", opt)
@@ -99,3 +99,6 @@ end, {})
 
 -- 绑定快捷键
 vim.keymap.set('n', '<C-p>', '<cmd>AddPrintln<CR>', { noremap = true, silent = true })
+
+-- neo-tree 快捷键
+vim.keymap.set('n', '<leader>e', ':Neotree toggle<CR>', { desc = 'Toggle Neo-tree' })
