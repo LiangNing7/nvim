@@ -15,7 +15,14 @@ vim.opt.cmdheight = 1
 vim.opt.laststatus = 3
 vim.opt.expandtab = true
 vim.opt.scrolloff = 10
-vim.opt.shell = "fish"
+-- Shell 配置 - 优先使用 bash 以避免兼容性问题
+if vim.fn.executable("bash") == 1 then
+	vim.opt.shell = "bash"
+elseif vim.fn.executable("zsh") == 1 then
+	vim.opt.shell = "zsh"
+else
+	vim.opt.shell = "fish"
+end
 vim.opt.backupskip = { "/tmp/*", "/private/tmp/*" }
 vim.opt.inccommand = "split"
 vim.opt.ignorecase = true -- Case insensitive searching UNLESS /C or capital in search

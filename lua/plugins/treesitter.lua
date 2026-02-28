@@ -3,6 +3,9 @@ return {
 
 	{
 		"nvim-treesitter/nvim-treesitter",
+		dependencies = {
+			"nvim-treesitter/nvim-treesitter-textobjects",
+		},
 		build = ":TSUpdate",
 		opts = {
 			ensure_installed = {
@@ -17,10 +20,13 @@ return {
 				"http",
 				"java",
 				"php",
+				"python",
 				"rust",
 				"scss",
 				"sql",
 				"svelte",
+				"lua",
+				"yaml",
 			},
 
 			-- matchup = {
@@ -37,8 +43,8 @@ return {
 			playground = {
 				enable = true,
 				disable = {},
-				updatetime = 25, -- Debounced time for highlighting nodes in the playground from source code
-				persist_queries = true, -- Whether the query persists across vim sessions
+				updatetime = 25,
+				persist_queries = true,
 				keybindings = {
 					toggle_query_editor = "o",
 					toggle_hl_groups = "i",
@@ -50,6 +56,53 @@ return {
 					update = "R",
 					goto_node = "<cr>",
 					show_help = "?",
+				},
+			},
+
+			-- Treesitter textobjects
+			textobjects = {
+				select = {
+					enable = true,
+					lookahead = true,
+					keymaps = {
+						["af"] = "@function.outer",
+						["if"] = "@function.inner",
+						["ac"] = "@class.outer",
+						["ic"] = "@class.inner",
+						["aa"] = "@parameter.outer",
+						["ia"] = "@parameter.inner",
+						["ab"] = "@block.outer",
+						["ib"] = "@block.inner",
+					},
+				},
+				move = {
+					enable = true,
+					set_jumps = true,
+					goto_next_start = {
+						["]m"] = "@function.outer",
+						["]]"] = "@class.outer",
+					},
+					goto_next_end = {
+						["]M"] = "@function.outer",
+						["]["] = "@class.outer",
+					},
+					goto_previous_start = {
+						["[m"] = "@function.outer",
+						["[["] = "@class.outer",
+					},
+					goto_previous_end = {
+						["[M"] = "@function.outer",
+						["[]"] = "@class.outer",
+					},
+				},
+				swap = {
+					enable = true,
+					swap_next = {
+						["<leader>a"] = "@parameter.inner",
+					},
+					swap_previous = {
+						["<leader>A"] = "@parameter.inner",
+					},
 				},
 			},
 		},
@@ -64,6 +117,24 @@ return {
 				},
 			})
 			vim.treesitter.language.register("markdown", "mdx")
+		end,
+	},
+
+	-- Treesitter textobjects
+	{
+		"nvim-treesitter/nvim-treesitter-textobjects",
+		event = "BufReadPost",
+	},
+
+	-- Various additional textobjects
+	{
+		"chrisgrieser/nvim-various-textobjs",
+		event = { "CursorHold", "CursorHoldI" },
+		config = function()
+			require("various-textobjs").setup({
+				useDefaultKeymaps = true,
+				disabledKeymaps = {},
+			})
 		end,
 	},
 }

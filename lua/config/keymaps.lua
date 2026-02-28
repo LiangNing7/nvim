@@ -27,7 +27,7 @@ keymap.set("n", "-", "<C-x>")
 keymap.set("n", "dw", 'vb"_d')
 
 -- Select all
-keymap.set("n", "<C-a>", "gg<S-v>G")
+keymap.set("n", "<C-a>", "gg<S-v>G", { noremap = true, silent = true, desc = "Select All" })
 
 -- Save with root permission (not working for now)
 --vim.api.nvim_create_user_command('W', 'w !sudo tee > /dev/null %', {})
@@ -41,8 +41,7 @@ keymap.set("n", "<C-m>", "<C-i>", opts)
 
 -- New tab
 keymap.set("n", "te", ":tabedit")
-keymap.set("n", "<tab>", ":tabnext<Return>", opts)
-keymap.set("n", "<s-tab>", ":tabprev<Return>", opts)
+-- Tab navigation 由 bufferline 插件处理 (<Tab>/<S-Tab>)
 -- Split window
 keymap.set("n", "ss", ":split<Return>", opts)
 keymap.set("n", "sv", ":vsplit<Return>", opts)
@@ -70,6 +69,15 @@ end)
 keymap.set("n", "<leader>i", function()
 	require("craftzdog.lsp").toggleInlayHints()
 end)
+
+-- Quick actions
+-- <C-q> 在任何情况下都直接退出，不进入 dashboard
+keymap.set("n", "<C-q>", "<cmd>qa<cr>", { noremap = true, silent = true, desc = "Quick Quit All" })
+keymap.set("n", "<C-s>", "<cmd>w<cr>", { noremap = true, silent = true, desc = "Quick Save" })
+keymap.set("i", "<C-s>", "<Esc><cmd>w<cr>a", { noremap = true, silent = true, desc = "Quick Save (Insert)" })
+
+-- LSP restart
+keymap.set("n", "<leader>lr", "<cmd>LspRestart<cr>", { noremap = true, silent = true, desc = "LSP Restart" })
 
 vim.api.nvim_create_user_command("ToggleAutoformat", function()
 	require("craftzdog.lsp").toggleAutoformat()
